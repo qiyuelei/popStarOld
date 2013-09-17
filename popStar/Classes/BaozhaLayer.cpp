@@ -12,6 +12,9 @@ Particle::~Particle(){}
 bool Particle::init(){
     if (CCLayerColor::initWithColor(ccc4(0, 0, 0, 0))) {
         
+       // CCTexture2D* test = CCTextureCache::sharedTextureCache()->addImage("Icon.png");
+        initLitterStar();
+        
         //this->setTouchEnabled(true);
         return true;
     }else{
@@ -19,12 +22,40 @@ bool Particle::init(){
     }
 }
 
-void Particle::ParticleExplosion(CCPoint location){
+void Particle::ParticleExplosion(CCPoint location,int PaopaoType){
     m_emitter = CCParticleExplosion::create();
     m_emitter->retain();
     addChild(m_emitter, 10);
     
-    m_emitter->setTexture( CCTextureCache::sharedTextureCache()->addImage("Icon.png") );
+    switch (PaopaoType) {
+        case 0:
+            starTexture = LitterStar1;
+            break;
+        case 1:
+            starTexture = LitterStar2;
+            break;
+        case 2:
+            starTexture = LitterStar3;
+            break;
+        case 3:
+            starTexture = LitterStar4;
+            break;
+        case 4:
+            starTexture = LitterStar5;
+            break;
+        case 5:
+            starTexture = LitterStar6;
+            break;
+        case 6:
+            starTexture = LitterStar6;
+            break;
+        default:
+            starTexture = LitterStar1;
+            break;
+    }
+    
+    //m_emitter->setTexture( CCTextureCache::sharedTextureCache()->addImage("Icon.png"));
+    m_emitter->setTexture(starTexture);
     
     // m_emitter->setAutoRemoveOnFinish(true);
     m_emitter->setEmissionRate(90);
@@ -58,6 +89,18 @@ void Particle::ccTouchesEnded(CCSet *touches,CCEvent *event)
 }
 void Particle::setEmitterPosition(CCPoint location){
     m_emitter->setPosition(location);
+}
+
+void Particle::initLitterStar(){
+    LitterStar1 = CCTextureCache::sharedTextureCache()->addImage("huangxingxing.png");
+    LitterStar2 = CCTextureCache::sharedTextureCache()->addImage("lanxingxing.png");
+    LitterStar3 = CCTextureCache::sharedTextureCache()->addImage("lvxingxing.png");
+    LitterStar4 = CCTextureCache::sharedTextureCache()->addImage("hongxingxing.png");
+    LitterStar5 = CCTextureCache::sharedTextureCache()->addImage("chengxingxing.png");
+    LitterStar6 = CCTextureCache::sharedTextureCache()->addImage("fensexingxing.png");
+
+
+
 }
 //CCScene* Particle::scene(){
  //   CCScene* scene = CCScene::create();

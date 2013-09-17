@@ -53,6 +53,7 @@ private:
     void fnCm();
     void fnChm();
     void menuAudioCallback();
+    void menuBackGroundMusicback();
     
     void fnSmNewGame();
     void fnSmContinue();

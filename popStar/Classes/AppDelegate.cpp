@@ -12,7 +12,7 @@
 #include "SimpleAudioEngine.h"
 #include "FirstScene.h"
 #include "GameScene.h"
-#include "BaozhaLayer.h"
+#include "MainGameScene.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -44,7 +44,8 @@ bool AppDelegate::applicationDidFinishLaunching()
     // create a scene. it's an autorelease object
     //CCScene *pScene = HelloWorld::scene();
    // CCScene* pScene = GameScene::scene();
-    CCScene* pScene = FirstScene::scene();
+    //CCScene* pScene = FirstScene::scene();
+    CCScene* pScene = MainGameScene::scene();
     //CCScene* pScene = Particle::scene();
     // run
     pDirector->runWithScene(pScene);

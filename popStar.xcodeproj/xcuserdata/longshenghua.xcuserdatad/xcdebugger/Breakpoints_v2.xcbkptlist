@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "popStar/Classes/FirstScene.cpp"
-            timestampString = "400944005.469951"
+            timestampString = "400990869.349056"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
             landmarkName = "FirstScene::fnPlayer(int GameParameter)"
             landmarkType = "5">
          </BreakpointContent>

@@ -14,8 +14,10 @@
 #include "GameBg.h"
 #include "PauseLayer.h"
 #include "BaozhaLayer.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
+using namespace CocosDenshion;
 using namespace std;
 
 class GameScene:public CCLayer {
@@ -27,10 +29,13 @@ public:
     static CCScene* scene();
     CREATE_FUNC(GameScene);
 
+    virtual void menuPause();
     CCSize winSize;
     int checkNum;
     bool gameStat;
     bool pauseStat;
+    int continueStat;
+    int gameMode;
     
     int Score = 0;
     int targetScore = 0;
@@ -58,21 +63,35 @@ public:
     char curGameModeTag[128];
     bool isNewGame;
     int mapSpan;
+    int value;
     
     void ccTouchesEnded(CCSet *touches,CCEvent *event);
     cocos2d::CCTexture2D* m_pSpriteTexture; // weak ref 
-
+    cocos2d::CCTexture2D* xiaoxin_pSpriteTexture; // weak ref
     CCSpriteBatchNode *parent;
     
     CCArray* PaopaoArray;
     CCArray* SelPaopaoArray;
 
-     void setGameParameter(int GameParameter);   
+     void setGameParameter(int GameParameter);
+    
+    void pause();
+    void resume();
+    void initModeMenu(int continueStat,int gameMode);
+    void initPauseMenu();
+    
+    void menuNewGameCallBack();
+    void menuContinueCallBack();
+    void menuBackCallBack();
+    
+    void menuDel(CCObject spender);
+
+    void jiafen(CCPoint location);
+    void jiafenDone(cocos2d::CCNode *sender);
 private:
 
     void getCurStage(bool isNewGame,int curGameMode);
-    void pause();
-    void resume();
+
     void test();
 private:
     
@@ -95,6 +114,7 @@ private:
     void initMap();
 
     void selPaopao(int idy);
+    void moveSelPaopao();
 
 private:
     
@@ -120,9 +140,12 @@ private:
     CCMenuItemImage *pNewGame;
     CCMenuItemImage *pResume;
     CCMenuItemImage *pBack;
+    CCMenu* pMenu;    
     
     void showGood(int showId);
     void hideGood();
+    void showGameOver();
+    void showGameOverDone(cocos2d::CCNode *sender);
  };
 
 #endif /* defined(__pop__GameScene__) */

@@ -41,9 +41,6 @@ bool FirstScene::init(){
     if (CCUserDefault::sharedUserDefault()->getIntegerForKey("backGroundMusic") == 1) {
         CCLog("music");
        // SimpleAudioEngine::sharedEngine()->playEffect("good.wav");
-       // SimpleAudioEngine::sharedEngine()->playEffect("gameover1.caf");
-        //SimpleAudioEngine::sharedEngine()->playBackgroundMusic("backGround.caf",true);
-       // SimpleAudioEngine::sharedEngine()->playBackgroundMusic("bg1.caf", true);
         SimpleAudioEngine::sharedEngine()->playBackgroundMusic("bgMusic.wav", true);
     }
     
@@ -95,10 +92,10 @@ void FirstScene::initOtherMenu(){
     
     CCMenuItemImage *btnOn = CCMenuItemImage::create("youshengyin.png", "wushengyin.png");
     CCMenuItemImage *btnOff = CCMenuItemImage::create("wushengyin.png", "youshengyin.png");
-    if (CCUserDefault::sharedUserDefault()->getIntegerForKey("audio",0)==1) {
-        pAudio = CCMenuItemToggle::createWithTarget(this, menu_selector(FirstScene::menuAudioCallback), btnOff,btnOn,NULL);
+    if (CCUserDefault::sharedUserDefault()->getIntegerForKey("backGroundMusic",0)==0) {
+        pAudio = CCMenuItemToggle::createWithTarget(this, menu_selector(FirstScene::menuBackGroundMusicback), btnOff,btnOn,NULL);
     }else{
-        pAudio = CCMenuItemToggle::createWithTarget(this, menu_selector(FirstScene::menuAudioCallback), btnOn,btnOff,NULL);
+        pAudio = CCMenuItemToggle::createWithTarget(this, menu_selector(FirstScene::menuBackGroundMusicback), btnOn,btnOff,NULL);
     }
     pAudio->setPosition(ccp(20,20));
     pAudio->setScale(0.2);
@@ -107,7 +104,7 @@ void FirstScene::initOtherMenu(){
     
     CCMenuItemImage *MusicbtnOn = CCMenuItemImage::create("youyinyue.png", "wuyinyue.png");
     CCMenuItemImage *MusicbtnOff = CCMenuItemImage::create("wuyinyue.png", "youyinyue.png");
-    if (CCUserDefault::sharedUserDefault()->getIntegerForKey("Musicaudio",0)==1) {
+    if (CCUserDefault::sharedUserDefault()->getIntegerForKey("soundMusic",0)==0) {
         pMusicAudio = CCMenuItemToggle::createWithTarget(this, menu_selector(FirstScene::menuAudioCallback), MusicbtnOff,MusicbtnOn,NULL);
     }else{
         pMusicAudio = CCMenuItemToggle::createWithTarget(this, menu_selector(FirstScene::menuAudioCallback), MusicbtnOn,MusicbtnOff,NULL);
@@ -241,9 +238,25 @@ void FirstScene::fnChm(){
     }
 }
 void FirstScene::menuAudioCallback(){
-    
+    if (CCUserDefault::sharedUserDefault()->getIntegerForKey("soundMusic",0) == 1) {
+        CCUserDefault::sharedUserDefault()->setIntegerForKey("soundMusic", 0);
+        SimpleAudioEngine::sharedEngine()->pauseAllEffects();
+    }else{
+        CCUserDefault::sharedUserDefault()->setIntegerForKey("soundMusic", 1);
+        SimpleAudioEngine::sharedEngine()->resumeAllEffects();
+    }
+    CCUserDefault::sharedUserDefault()->flush();
 }
-
+void FirstScene::menuBackGroundMusicback(){
+    if (CCUserDefault::sharedUserDefault()->getIntegerForKey("backGroundMusic",0) == 1) {
+        CCUserDefault::sharedUserDefault()->setIntegerForKey("backGroundMusic", 0);
+        SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
+    }else{
+        CCUserDefault::sharedUserDefault()->setIntegerForKey("backGroundMusic", 1);
+        SimpleAudioEngine::sharedEngine()->playBackgroundMusic("bgMusic.wav", true);
+    }
+    CCUserDefault::sharedUserDefault()->flush();
+}
 void FirstScene::fnSmNewGame(){
     fnPlayer(11);
 }

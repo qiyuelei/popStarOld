@@ -24,7 +24,17 @@ public:
     CREATE_FUNC(Particle);
     CCParticleSystem*    m_emitter;
     CCSprite*            m_background;
-    void ParticleExplosion(CCPoint location);
+    CCTexture2D* xinxinTexture;
+    void ParticleExplosion(CCPoint location,int PaopaoType);
+    
+    void initLitterStar();
+    CCTexture2D* LitterStar1;
+    CCTexture2D* LitterStar2;
+    CCTexture2D* LitterStar3;
+    CCTexture2D* LitterStar4;
+    CCTexture2D* LitterStar5;
+    CCTexture2D* LitterStar6;
+    CCTexture2D * starTexture;
 private:
     
     void ccTouchesEnded(CCSet *touches,CCEvent *event);

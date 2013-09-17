@@ -27,18 +27,21 @@ bool GameScene::init(){
     {
         return false;
     }
-    
+    continueStat = 1;
+    gameMode = 2;
     gameStat = true;
     winSize = CCDirector::sharedDirector()->getWinSize();
     setGameParameter(CCUserDefault::sharedUserDefault()->getIntegerForKey("GameParameter"));
     
     initGamebg();
     initConfig();
-    initMenu();
+
 
     parent = CCSpriteBatchNode::create("sekuai.png", 1000);
     m_pSpriteTexture = parent->getTexture();
     addChild(parent, 0, kTagParentNode);
+    
+    
     
     //this->schedule(schedule_selector(GameScene::initMap),1.0f);
     initMap();
@@ -46,6 +49,12 @@ bool GameScene::init(){
     this->schedule(schedule_selector(GameScene::update),2.0f);
     
     initBaozhaLayer();
+    
+   // MenuGameSceneLayer* MenuLayer = MenuGameSceneLayer::create();
+    //this->addChild(MenuLayer);
+    
+    //initMenu();
+    initPauseMenu();
     return true;
 
 }
@@ -121,15 +130,15 @@ void GameScene::initConfig(){
     }
     switch (curStage) {
         case 1:
-            targetScore = 100;
+            targetScore = 1000;
             break;
         case 2:
-            targetScore = 300;
+            targetScore = 3000;
             break;
         case 3:
-            targetScore = 600;
+            targetScore = 6000;
         case 4:
-            targetScore = 800;
+            targetScore = 8000;
             break;
         case 5:
             targetScore = 1000;
@@ -149,8 +158,59 @@ void GameScene::initConfig(){
         case 10:
             targetScore = 24000;
             break;
+        case 11:
+            targetScore = 27000;
+            break;
+        case 12:
+            targetScore = 30000;
+            break;
+        case 13:
+            targetScore = 33000;
+            break;
+        case 14:
+            targetScore = 35000;
+            break;
+        case 15:
+            targetScore = 38000;
+            break;
+        case 16:
+            targetScore = 40000;
+            break;
+        case 17:
+            targetScore = 42000;
+            break;
+        case 18:
+            targetScore = 45000;
+            break;
+        case 19:
+            targetScore = 47000;
+            break;
+        case 20:
+            targetScore = 50000;
+            break;
+        case 21:
+            targetScore = 52000;
+            break;
+        case 22:
+            targetScore = 54000;
+            break;
+        case 23:
+            targetScore = 57000;
+            break;
+        case 24:
+            targetScore = 60000;
+            break;
+        case 25:
+            targetScore = 63000;
+            break;
+        case 26:
+            targetScore = 65000;
+            break;
+        case 27:
+            targetScore = 68000;
+            break;
         default:
-           targetScore = 24000;
+           targetScore =  targetScore+2000;
             break;
     }
     sprintf(ScoreChar, "%d",Score);
@@ -174,9 +234,14 @@ void GameScene::initBaozhaLayer(){
 }
 
 void GameScene::initMenu(){
-    CCMenuItemImage *pPause = CCMenuItemImage::create("zanting.png", "zanting.png",this,menu_selector(GameScene::pause));
+    
+   // MenuGameSceneLayer* MenuLayer = MenuGameSceneLayer::create();
+   // this->addChild(MenuLayer);
+    CCMenuItemImage *pPause = CCMenuItemImage::create("zanting_before.png", "zanting_after.png",this,menu_selector(GameScene::pause));
+   // CCMenuItemImage *pPause = CCMenuItemImage::create("zanting.png", "Smnew_after.png",this,menu_selector(GameScene::pause));
     pPause->setPosition(ccp(82,308));
     pPause->setRotation(90);
+    pPause->setZOrder(100);
     pPause->setScale(0.8);
   
     switch (curGameMode) {
@@ -190,7 +255,7 @@ void GameScene::initMenu(){
             pResume->setPosition(ccp(250,320+pResume->getContentSize().height));
             pResume->setRotation(-90);
             pResume->setScale(0.4);
-            pResume->setEnabled(false);
+           // pResume->setEnabled(false);
             
             pBack = CCMenuItemImage::create("Smsave_before.png", "Smsave_after.png",this,menu_selector(GameScene::saveAndExit));
             pBack->setPosition(ccp(480+pResume->getContentSize().width,160));
@@ -239,17 +304,23 @@ void GameScene::initMenu(){
     
     CCMenu* pMenu = CCMenu::create(pResume,pPause,pBack,pNewGame, NULL);
     pMenu->setPosition( CCPointZero );
+    pMenu->setZOrder(1000);
     this->addChild(pMenu, 10);
 }
 void GameScene::resume(){
     CCLog("resume");
 }
 void GameScene::pause(){
-    if (!pauseStat) {
+    CCLog("pause");
+    if (pauseStat == false) {
     pauseStat = true;
     this->setTouchEnabled(false);
-    addPauseBtn();
+    //addPauseBtn();
+        initModeMenu(continueStat, curGameMode);
         }
+}
+void GameScene::menuPause(){
+    CCLog("menuPause");
 }
 void GameScene::addPauseBtn(){
     CCMoveTo* move3 = CCMoveTo::create(1.0f, CCPointMake(200, 160));
@@ -313,6 +384,12 @@ void GameScene::ccTouchesEnded(CCSet *touches,CCEvent *event)
 
             }else{
                 if (SelPaopaoArray->count()>1) {
+                    if (CCUserDefault::sharedUserDefault()->getIntegerForKey("soundMusic")==1) {
+                     SimpleAudioEngine::sharedEngine()->playEffect("xiaopaopao.wav");
+                    //SimpleAudioEngine::sharedEngine()->playEffect("a5.caf");
+                    }
+                    value = SelPaopaoArray->count()*5;
+                    
                     Score = Score+SelPaopaoArray->count()*SelPaopaoArray->count()*5;
                     sprintf(ScoreChar, "%d",Score);
                     gameBgLayer->GetscoreTTF()->setString(ScoreChar);
@@ -337,7 +414,8 @@ void GameScene::ccTouchesEnded(CCSet *touches,CCEvent *event)
                     gameBgLayer->GetselScoreTTF()->visit();
                for (int k = 0; k< SelPaopaoArray->count(); k++) {
                     NormalPaoPao* _myPaoPao2 = (NormalPaoPao*)SelPaopaoArray->objectAtIndex(k);
-                   BaozhaLayer->ParticleExplosion(_myPaoPao2->getPosition());
+                   BaozhaLayer->ParticleExplosion(_myPaoPao2->getPosition(),_myPaoPao->PaoPaoType);
+                   jiafen(_myPaoPao2->getPosition());
                    parent->removeChild(_myPaoPao2, true);
                    PaopaoArray->removeObject(_myPaoPao2);
                 }
@@ -423,7 +501,7 @@ void GameScene::MovePaopao_L(){
                    // CCLog("need not move,j::%i,moveNum:%i",j,moveNum);
                   ///  _myPaoPao->runAction(CCSequence::create(CCMoveTo::create(0.2f, ccp(_myPaoPao->getPositionX()+32*moveNum,_myPaoPao->getPositionY())),NULL));
                    // int targetPointX = _myPaoPao->getPositionX()+32*moveNum;
-                    float dt = moveNum*0.10;
+                    float dt = moveNum*0.15;
                   //  CCMoveTo* move1 = CCMoveTo::create(0.08f, ccp(targetPointX+5,_myPaoPao->getPositionY()));
                   //  CCMoveTo* move2 = CCMoveTo::create(0.05f, ccp(targetPointX,_myPaoPao->getPositionY()));
                     //CCMoveTo* move3 = CCMoveTo::create(0.05f, ccp(targetPointX,_myPaoPao->getPositionY()));
@@ -459,8 +537,12 @@ void GameScene::MovePaopao_L(){
 void GameScene::selPaopao(int idy){
     for (int i=0; i<SelPaopaoArray->count(); i++) {
         NormalPaoPao* _myPaoPao = (NormalPaoPao*)SelPaopaoArray->objectAtIndex(i);
+
         int idx = _myPaoPao->PaoPaoType;
         _myPaoPao->setTextureRect(CCRectMake(64 * idx,64 * idy,64,64));
+        CCScaleTo* scale1 = CCScaleTo::create(0.3f, 0.53);
+        CCScaleTo* scale2 = CCScaleTo::create(0.3f, 0.5);
+        _myPaoPao->runAction(CCSequence::create(scale1,scale2,NULL));
     }
 }
 void GameScene::findPaopao(cocos2d::CCPoint location, int paopaoType){
@@ -477,6 +559,9 @@ void GameScene::findPaopao_T(CCPoint location,int paopaoType){
           //  CCLog("paopaoType:%i",_myPaoPao->PaoPaoType);
             _myPaoPao->checkStat = 1;
            // _myPaoPao->setPosition(ccp(_myPaoPao->getPositionX()+5,_myPaoPao->getPositionY()));
+            //CCScaleTo* scale1 = CCScaleTo::create(0.3f, 1.01);
+            //CCScaleTo* scale2 = CCScaleTo::create(0.3f, 1);
+           // _myPaoPao->runAction(CCSequence::create(scale1,scale2,NULL));
             SelPaopaoArray->addObject(_myPaoPao);
             findPaopao_T(CCPoint(location.x,location.y+32), paopaoType);
             findPaopao_R(CCPoint(location.x+32,location.y), paopaoType);
@@ -588,7 +673,7 @@ void GameScene::update(){
 }
 void GameScene::isGameOver(){
     bool gameOver = false;
-    for (int k = 0; k<4; k++) {
+    for (int k = 0; k< corlorNum; k++) {
     for (int i = 0; i<PaopaoArray->count(); i++) {
         NormalPaoPao* _myPaopao = (NormalPaoPao*)PaopaoArray->objectAtIndex(i);
         if (_myPaopao->PaoPaoType == k) {
@@ -609,6 +694,9 @@ void GameScene::isGameOver(){
                 }
             }
     }}}
+    if (PaopaoArray->count() == 1) {
+        gameOver = true;
+    }
     if (!gameOver) {
         if (checkNum > 2) {
            // CCLog("game over");
@@ -629,13 +717,22 @@ void GameScene::delPaopao(){
         int i = PaopaoArray->count()-1;
         NormalPaoPao* _myPaopao = (NormalPaoPao*)PaopaoArray->objectAtIndex(i);
         parent->removeChild(_myPaopao, true);
-        BaozhaLayer->ParticleExplosion(_myPaopao->getPosition());
+        if (CCUserDefault::sharedUserDefault()->getIntegerForKey("soundMusic")==1) {
+          
+           SimpleAudioEngine::sharedEngine()->playEffect("xiaopaopao.wav");
+        }
+        BaozhaLayer->ParticleExplosion(_myPaopao->getPosition(),_myPaopao->PaoPaoType);
         PaopaoArray->removeObject(_myPaopao);
     this->schedule(schedule_selector(GameScene::delPaopao), 0.2f);
     }else{
         CCLog("over");
-        startNewStage();
-    this->unschedule(schedule_selector(GameScene::delPaopao));
+        this->unschedule(schedule_selector(GameScene::delPaopao));
+        if (Score >= targetScore) {
+                  startNewStage();
+        }else{
+            showGameOver();
+        }
+
     }
 
 }
@@ -704,9 +801,16 @@ void GameScene::initGamebg(){
 void GameScene::showGood(int showId){
     switch (showId) {
         case 1:
-            showSprite = CCSprite::create("good.png");  
+            if (CCUserDefault::sharedUserDefault()->getIntegerForKey("soundMusic")==1) {
+                // SimpleAudioEngine::sharedEngine()->playEffect("xiaopaopao.wav");
+                SimpleAudioEngine::sharedEngine()->playEffect("a5.caf");
+            }
+            showSprite = CCSprite::create("good.png");
             break;
         case 2:
+            if (CCUserDefault::sharedUserDefault()->getIntegerForKey("soundMusic")==1) {
+                SimpleAudioEngine::sharedEngine()->playEffect("good.wav");
+            }
             showSprite = CCSprite::create("wow.png");
             break;
         case 3:
@@ -738,6 +842,163 @@ void GameScene::fnPlayer(int GameParameter){
     CCTransitionPageTurn *fade = CCTransitionPageTurn::create(1.0f, sc,true);
     CCDirector::sharedDirector()->replaceScene(fade);
 }
+void GameScene::initPauseMenu(){
+    CCMenuItemImage *pPause = CCMenuItemImage::create("zanting_before.png", "zanting_after.png",this,menu_selector(GameScene::pause));
+    //CCMenuItemImage *pPause = CCMenuItemImage::create("Icon.png", "zanting_after.png",this,menu_selector(GameScene::pause));
+    // CCMenuItemImage *pPause = CCMenuItemImage::create("zanting.png", "Smnew_after.png",this,menu_selector(GameScene::pause));
+    pPause->setPosition(ccp(82,305));
+    pPause->setRotation(90);
+    pPause->setZOrder(100);
+    pPause->setScale(0.8);
+    
+    CCMenu* pMenuPause = CCMenu::create(pPause,NULL);
+    pMenuPause->setPosition(CCPointZero);
+    this->addChild(pMenuPause);
+}
+void GameScene::initModeMenu(int continueStat,int gameMode){
+    CCLog("continueStat:%i,gameMode:%i",continueStat,gameMode);
+    switch (gameMode) {
+        case 1:
+            pNewGame = CCMenuItemImage::create("Smnew_before.png", "Smnew_after.png",this,menu_selector(GameScene::menuNewGameCallBack));
+            pResume = CCMenuItemImage::create("Smcontinue_before.png", "Smcontinue_after.png","continue_before_huise.png",this,menu_selector(GameScene::menuContinueCallBack));
+            pBack = CCMenuItemImage::create("Smsave_before.png", "Smsave_after.png",this,menu_selector(GameScene::menuBackCallBack));
+            break;
+        case 2:
+            pNewGame = CCMenuItemImage::create("Cmnew_before.png", "Cmnew_after.png",this,menu_selector(GameScene::menuNewGameCallBack));
+            pResume = CCMenuItemImage::create("Cmcontinue_before.png", "Cmcontinue_after.png","continue_before_huise.png",this,menu_selector(GameScene::menuContinueCallBack));
+            pBack = CCMenuItemImage::create("Cmsave_before.png", "Cmsave_after.png",this,menu_selector(GameScene::menuBackCallBack));
+            break;
+        case 3:
+            pNewGame = CCMenuItemImage::create("Chmnew_bafore.png", "Chmnew_after.png",this,menu_selector(GameScene::menuNewGameCallBack));
+            pResume = CCMenuItemImage::create("Chmcontinue_before.png", "Chmcontinue_after.png","continue_before_huise.png",this,menu_selector(GameScene::menuContinueCallBack));
+            pBack = CCMenuItemImage::create("Chmsave_before.png", "Chmsave_after.png",this,menu_selector(GameScene::menuBackCallBack));
+            break;
+            
+        default:
+            break;
+    }
+    //pNewGame = CCMenuItemImage::create("Smnew_before.png", "Smnew_after.png",this,menu_selector(MenuGameSceneLayer::menuNewGameCallBack));
+    pNewGame->setPosition(ccp(200,160));
+    pNewGame->setRotation(-90);
+    pNewGame->setScale(0.4);
+    
+    //pResume = CCMenuItemImage::create("Smcontinue_before.png", "Smcontinue_after.png","continue_before_huise.png",this,menu_selector(MenuGameSceneLayer::menuContinueCallBack));
+    pResume->setPosition(ccp(250,160));
+    pResume->setRotation(-90);
+    pResume->setScale(0.4);
+    if (continueStat == 0) {
+        pResume->setEnabled(false);
+    }
+    
+    // pBack = CCMenuItemImage::create("Smsave_before.png", "Smsave_after.png",this,menu_selector(MenuGameSceneLayer::menuBackCallBack));
+    pBack->setPosition(ccp(300,160));
+    pBack->setRotation(-90);
+    pBack->setScale(0.4);
+    
+    pMenu = CCMenu::create(pResume,pBack,pNewGame, NULL);
+    pMenu->setPosition(ccp(-480,0));
+    pMenu->setZOrder(1000);
+    this->addChild(pMenu, 10);
+    pMenu->runAction(CCEaseBackOut::create(CCSequence::create(CCMoveTo::create(0.3f, ccp(0,0)),NULL)));
+    
+    
+}
+
+void GameScene::menuNewGameCallBack(){
+    fnPlayer(CCUserDefault::sharedUserDefault()->getIntegerForKey("GameParameter"));
+}
+void GameScene::menuContinueCallBack(){
+        pauseStat = false;
+        this->setTouchEnabled(true);
+    pMenu->runAction(CCEaseBackIn::create(CCSequence::create(CCMoveTo::create(0.3f, ccp(-480,0)),CCCallFuncN::create(this,callfuncN_selector(GameScene::menuDel)),NULL)));
+    
+}
+void GameScene::menuBackCallBack(){
+    switch (curGameMode) {
+        case 1:
+            CCUserDefault::sharedUserDefault()->setIntegerForKey("curStageSm", curStage);
+            CCUserDefault::sharedUserDefault()->setIntegerForKey("scoreSm", Score);
+            if (CCUserDefault::sharedUserDefault()->getIntegerForKey("bestScoreSm",0) < Score) {
+                CCUserDefault::sharedUserDefault()->setIntegerForKey("bestScoreSm", Score);
+            }
+            CCUserDefault::sharedUserDefault()->flush();
+            break;
+        case 2:
+            CCUserDefault::sharedUserDefault()->setIntegerForKey("curStageCm", curStage);
+            CCUserDefault::sharedUserDefault()->setIntegerForKey("scoreCm", Score);
+            if (CCUserDefault::sharedUserDefault()->getIntegerForKey("bestScoreCm",0) < Score) {
+                CCUserDefault::sharedUserDefault()->setIntegerForKey("bestScoreCm", Score);
+            }
+            CCUserDefault::sharedUserDefault()->flush();
+            break;
+            
+        default:
+            CCUserDefault::sharedUserDefault()->setIntegerForKey("curStageChm", curStage);
+            CCUserDefault::sharedUserDefault()->setIntegerForKey("scoreChm", Score);
+            if (CCUserDefault::sharedUserDefault()->getIntegerForKey("bestScoreChm",0) < Score) {
+                CCUserDefault::sharedUserDefault()->setIntegerForKey("bestScoreChm", Score);
+            }
+            CCUserDefault::sharedUserDefault()->flush();
+            break;
+    }
+    
+    //this->setTouchEnabled(true);
+    pauseStat = false;
+    
+    CCScene* FirstScene = FirstScene::scene();
+    CCDirector::sharedDirector()->replaceScene(FirstScene);
+
+}
+void GameScene::menuDel(CCObject spender){
+    removeChild(pMenu);
+}
+void GameScene::jiafen(cocos2d::CCPoint location){
+    char valueChar[128];
+    sprintf(valueChar, "+%d",value);
+    CCLabelTTF* valueTTF = CCLabelTTF::create(valueChar, "Arial", 30);
+    valueTTF->setPosition(location);
+    valueTTF->setRotation(-90);
+    valueTTF->setScale(0.5);
+    this->addChild(valueTTF);
+    
+    valueTTF->runAction(CCSequence::create(CCMoveTo::create(0.6, ccp(100,137)),CCCallFuncN::create(this, callfuncN_selector(GameScene::jiafenDone)),NULL));
+
+}
+void GameScene::jiafenDone(cocos2d::CCNode *sender){
+    CCLabelTTF* _ttf = (CCLabelTTF*)sender;
+    this->removeChild(_ttf);
+}
+
+void GameScene::showGameOver(){
+
+   // char valueChar[128];
+   // sprintf(valueChar, "+%d",value);
+    CCLabelTTF* valueTTF = CCLabelTTF::create("Game Over", "Arial", 30);
+    valueTTF->setPosition(ccp(100,160));
+    valueTTF->setRotation(-90);
+    valueTTF->setScale(0.2);
+
+    this->addChild(valueTTF);
+    
+    CCMoveTo* move1 = CCMoveTo::create(2.0f, ccp(200, 160));
+    CCScaleTo *scale1 = CCScaleTo::create(2.0, 0.5);
+    //CCCallFuncN* funcN = CCCallFunc::create(this, callfunc_selector(GameScene::showGameOverDone));
+    
+    CCSpawn* spawn = CCSpawn::create(move1,scale1,NULL);
+    //valueTTF->runAction(CCSequence::create(spawn,CCCallFuncN::create(this, callfunc_selector(GameScene::showGameOverDone)),NULL));
+    valueTTF->runAction(CCSequence::create(spawn,CCCallFuncN::create(this, callfuncN_selector(GameScene::showGameOverDone)),NULL));
+
+
+
+}
+void GameScene::showGameOverDone(cocos2d::CCNode *sender){
+    CCLog("GameOver");
+    CCLabelTTF* valueTTF = (CCLabelTTF*)sender;
+    this->removeChild(valueTTF);
+    initModeMenu(0, curGameMode);
+    
+}
+
 CCScene* GameScene::scene(){
     // 'scene' is an autorelease object
     CCScene *scene = CCScene::create();
