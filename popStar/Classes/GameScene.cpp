@@ -414,7 +414,7 @@ void GameScene::ccTouchesEnded(CCSet *touches,CCEvent *event)
                     gameBgLayer->GetselScoreTTF()->visit();
                for (int k = 0; k< SelPaopaoArray->count(); k++) {
                     NormalPaoPao* _myPaoPao2 = (NormalPaoPao*)SelPaopaoArray->objectAtIndex(k);
-                   BaozhaLayer->ParticleExplosion(_myPaoPao2->getPosition(),_myPaoPao->PaoPaoType);
+                //   BaozhaLayer->ParticleExplosion(_myPaoPao2->getPosition(),_myPaoPao->PaoPaoType);
                    jiafen(_myPaoPao2->getPosition());
                    parent->removeChild(_myPaoPao2, true);
                    PaopaoArray->removeObject(_myPaoPao2);
@@ -721,7 +721,7 @@ void GameScene::delPaopao(){
           
            SimpleAudioEngine::sharedEngine()->playEffect("xiaopaopao.wav");
         }
-        BaozhaLayer->ParticleExplosion(_myPaopao->getPosition(),_myPaopao->PaoPaoType);
+       // BaozhaLayer->ParticleExplosion(_myPaopao->getPosition(),_myPaopao->PaoPaoType);
         PaopaoArray->removeObject(_myPaopao);
     this->schedule(schedule_selector(GameScene::delPaopao), 0.2f);
     }else{

@@ -20,6 +20,7 @@ public:
     virtual bool init();
     CREATE_FUNC(GameBg);
     
+    void moveLayer();
     CCSize winSize;
     CCLabelTTF* scoreTTF;
     CCLabelTTF* bestScoreTTF;
@@ -34,6 +35,9 @@ public:
     CCLabelTTF* GetstageTTF();
     CCLabelTTF* GetselScoreTTF();
     CCSprite* GetcurGameModeIcon();
+    
+    void loadTTF();
+    void showTTF();
 
 private:
 

@@ -211,10 +211,11 @@ void FirstScene::initHomeMenu(){
 void FirstScene::fnPlayer(int GameParameter){
     CCUserDefault::sharedUserDefault()->setIntegerForKey("GameParameter", GameParameter);
     CCUserDefault::sharedUserDefault()->flush();
-    CCScene* sc = GameScene::scene();
+    //CCScene* sc = GameScene::scene();
+    CCScene* sc = MainGameScene::scene();
    // CCTransitionShrinkGrow *fade = CCTransitionShrinkGrow::create(1.5f, sc);
-    CCTransitionPageTurn *fade = CCTransitionPageTurn::create(0.3f, sc,true);
-    CCDirector::sharedDirector()->replaceScene(fade);
+   // CCTransitionPageTurn *fade = CCTransitionPageTurn::create(0.3f, sc,true);
+    CCDirector::sharedDirector()->replaceScene(sc);
 }
 void FirstScene::fnSm(){
     if (homeMenuStat) {

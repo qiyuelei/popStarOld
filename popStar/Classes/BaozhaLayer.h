@@ -25,7 +25,7 @@ public:
     CCParticleSystem*    m_emitter;
     CCSprite*            m_background;
     CCTexture2D* xinxinTexture;
-    void ParticleExplosion(CCPoint location,int PaopaoType);
+    void addParticleExplosion(CCPoint location,int PaopaoType);
     
     void initLitterStar();
     CCTexture2D* LitterStar1;

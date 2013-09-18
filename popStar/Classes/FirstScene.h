@@ -11,6 +11,7 @@
 
 #include "cocos2d.h"
 #include "GameScene.h"
+#include "MainGameScene.h"
 #include "BaozhaLayer.h"
 
 USING_NS_CC;

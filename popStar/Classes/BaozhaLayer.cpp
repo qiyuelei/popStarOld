@@ -13,16 +13,21 @@ bool Particle::init(){
     if (CCLayerColor::initWithColor(ccc4(0, 0, 0, 0))) {
         
        // CCTexture2D* test = CCTextureCache::sharedTextureCache()->addImage("Icon.png");
-        initLitterStar();
+        //initLitterStar();
         
         //this->setTouchEnabled(true);
+        addParticleExplosion(ccp(200, 200), 1);
+         CCSprite* sp = CCSprite::create("Icon.png");
+         sp->setPosition(ccp(100,160));
+         addChild(sp);
         return true;
     }else{
         return false;
     }
 }
 
-void Particle::ParticleExplosion(CCPoint location,int PaopaoType){
+void Particle::addParticleExplosion(CCPoint location,int PaopaoType){
+   // CCLog("explosion");
     m_emitter = CCParticleExplosion::create();
     m_emitter->retain();
     addChild(m_emitter, 10);
@@ -32,7 +37,8 @@ void Particle::ParticleExplosion(CCPoint location,int PaopaoType){
             starTexture = LitterStar1;
             break;
         case 1:
-            starTexture = LitterStar2;
+            //starTexture = LitterStar2;
+            starTexture = CCTextureCache::sharedTextureCache()->addImage("lanxingxing.png");
             break;
         case 2:
             starTexture = LitterStar3;
@@ -95,9 +101,10 @@ void Particle::initLitterStar(){
     LitterStar1 = CCTextureCache::sharedTextureCache()->addImage("huangxingxing.png");
     LitterStar2 = CCTextureCache::sharedTextureCache()->addImage("lanxingxing.png");
     LitterStar3 = CCTextureCache::sharedTextureCache()->addImage("lvxingxing.png");
-    LitterStar4 = CCTextureCache::sharedTextureCache()->addImage("hongxingxing.png");
-    LitterStar5 = CCTextureCache::sharedTextureCache()->addImage("chengxingxing.png");
-    LitterStar6 = CCTextureCache::sharedTextureCache()->addImage("fensexingxing.png");
+   // LitterStar4 = CCTextureCache::sharedTextureCache()->addImage("hongxingxing.png");
+   // LitterStar5 = CCTextureCache::sharedTextureCache()->addImage("chengxingxing.png");
+   // LitterStar6 = CCTextureCache::sharedTextureCache()->addImage("fensexingxing.png");
+    //LitterStar6 = CCTextureCache::sharedTextureCache()->addImage("Icon.png");
 
 
 
