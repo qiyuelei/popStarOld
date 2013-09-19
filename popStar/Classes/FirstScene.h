@@ -13,6 +13,7 @@
 #include "GameScene.h"
 #include "MainGameScene.h"
 #include "BaozhaLayer.h"
+#include "SoundLayer.h"
 
 USING_NS_CC;
 using namespace std;
@@ -36,6 +37,8 @@ public:
     CCMenu* pSmMenu;
     CCMenu* pcmMenu;
     CCMenu* pchmMenu;
+    
+    SoundLayer* soundLayer;
     
     bool gameMenuStat;
     bool homeMenuStat;

@@ -27,14 +27,17 @@ public:
     CCLabelTTF* targetScoreTTF;
     CCLabelTTF* stageTTF;
     CCLabelTTF* selScoreTTF;
-    CCSprite* curGameModeIcon;    
+    CCSprite* curGameModeIcon;
+    CCSprite* bg;
     
+    CCSprite* getbg();
     CCLabelTTF* GetscoreTTF();
     CCLabelTTF* GetbestScoreTTF();
     CCLabelTTF* GettargetScoreTTF();
     CCLabelTTF* GetstageTTF();
     CCLabelTTF* GetselScoreTTF();
     CCSprite* GetcurGameModeIcon();
+
     
     void loadTTF();
     void showTTF();

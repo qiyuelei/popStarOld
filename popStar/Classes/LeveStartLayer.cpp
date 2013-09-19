@@ -23,7 +23,7 @@ bool LeveStartLayer::init(){
     }
 }
 void LeveStartLayer::showTargetScore(){
-    labelTTF = CCLabelTTF::create("Level 1      Target Scores is        1000", "Airal", 40, CCSizeMake(300, 200),kCCTextAlignmentCenter);
+    labelTTF = CCLabelTTF::create("Level 1      Target score is        1000", "Airal", 40, CCSizeMake(300, 200),kCCTextAlignmentCenter);
     labelTTF->setPosition(ccp(-100, 160));
     labelTTF->setScale(0.5);
     labelTTF->setRotation(-90);

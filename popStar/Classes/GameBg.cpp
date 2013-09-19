@@ -25,12 +25,13 @@ bool GameBg::init(){
 }
 void GameBg::loadTTF(){
 
-    CCSprite* sp = CCSprite::create("game_bg.png");
-    sp->setAnchorPoint(ccp(0.5,0.5));
-    sp->setPosition(ccp(240,160));
-    sp->setScale(0.5);
-    sp->setRotation(-90);
-    this->addChild(sp);
+ //   CCSprite* curGameModeIcon = CCSprite::create("game_bg.png");
+    curGameModeIcon = CCSprite::create("jiemianbeijing.png");
+    curGameModeIcon->setAnchorPoint(ccp(0.5,0.5));
+    curGameModeIcon->setPosition(ccp(240,160));
+    curGameModeIcon->setScale(0.5);
+    curGameModeIcon->setRotation(-90);
+    this->addChild(curGameModeIcon,10);
     
     scoreTTF = CCLabelTTF::create("0", "Arial", 45);
     scoreTTF->setPosition(ccp(85, 137));
@@ -101,3 +102,7 @@ CCLabelTTF* GameBg::GetselScoreTTF(){
 CCSprite* GameBg::GetcurGameModeIcon(){
     return curGameModeIcon;
 }
+CCSprite* GameBg::getbg(){
+    return bg;
+}
+

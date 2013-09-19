@@ -38,11 +38,15 @@ bool FirstScene::init(){
     initGameMenu();
     initOtherMenu();
     
-    if (CCUserDefault::sharedUserDefault()->getIntegerForKey("backGroundMusic") == 1) {
-        CCLog("music");
+    soundLayer = SoundLayer::create();
+    addChild(soundLayer);
+    
+    soundLayer->playBgSound(1);
+    //if (CCUserDefault::sharedUserDefault()->getIntegerForKey("backGroundMusic") == 1) {
+     //   CCLog("music");
        // SimpleAudioEngine::sharedEngine()->playEffect("good.wav");
-        SimpleAudioEngine::sharedEngine()->playBackgroundMusic("bgMusic.wav", true);
-    }
+    //   SimpleAudioEngine::sharedEngine()->playBackgroundMusic("bgMusic.wav", true);
+   // }
     
     return true;
 }
@@ -254,7 +258,8 @@ void FirstScene::menuBackGroundMusicback(){
         SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
     }else{
         CCUserDefault::sharedUserDefault()->setIntegerForKey("backGroundMusic", 1);
-        SimpleAudioEngine::sharedEngine()->playBackgroundMusic("bgMusic.wav", true);
+        //SimpleAudioEngine::sharedEngine()->playBackgroundMusic("bgMusic.wav", true);
+        soundLayer->playBgSound(1);
     }
     CCUserDefault::sharedUserDefault()->flush();
 }
@@ -329,7 +334,7 @@ void FirstScene::initData(){
         CCUserDefault::sharedUserDefault()->setIntegerForKey("soundMusic", 1);
         CCUserDefault::sharedUserDefault()->flush();
     }else{
-        CCLog("second");
+       // CCLog("second");
 
     }
 }
